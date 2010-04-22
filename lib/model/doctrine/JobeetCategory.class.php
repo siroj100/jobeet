@@ -12,13 +12,25 @@
  */
 class JobeetCategory extends BaseJobeetCategory
 {
+  public function countActiveJobs()
+  {
+    return $this->getActiveJobsQuery()->count();
+  }
+
   public function getActiveJobs($max = 10)
+  {
+    $q = $this->getActiveJobsQuery()
+        ->limit($max);
+    
+    return $q->execute();
+  }
+
+  public function getActiveJobsQuery()
   {
     $q = Doctrine_Query::create()
         ->from('JobeetJob j')
-        ->where('j.category_id = ?', $this->getId())
-        ->limit($max);
+        ->where('j.category_id = ?', $this->getId());
     
-    return Doctrine::getTable('JobeetJob')->getActiveJobs($q);
+    return Doctrine::getTable('JobeetJob')->addActiveJobsQuery($q);
   }
 }
