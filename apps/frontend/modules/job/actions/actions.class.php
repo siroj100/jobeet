@@ -12,9 +12,8 @@ class jobActions extends sfActions
 {
   public function executeIndex(sfWebRequest $request)
   {
-    $this->jobeet_job_list = Doctrine::getTable('JobeetJob')
-      ->createQuery('a')
-      ->execute();
+    $this->categories = 
+        Doctrine::getTable('JobeetCategory')->getWithJobs();
   }
 
   public function executeShow(sfWebRequest $request)
